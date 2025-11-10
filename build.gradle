@@ -1,5 +1,6 @@
 plugins {
 	id 'java'
+	id 'maven-publish'
 	id 'org.springframework.boot' version '3.5.7'
 	id 'io.spring.dependency-management' version '1.1.7'
 	id 'org.springframework.cloud.contract' version '4.3.0'
@@ -17,6 +18,16 @@ java {
 
 repositories {
 	mavenCentral()
+	mavenLocal()
+}
+
+publishing {
+	publications {
+		maven(MavenPublication) {
+			artifact bootJar
+			artifact verifierStubsJar
+		}
+	}
 }
 
 ext {
