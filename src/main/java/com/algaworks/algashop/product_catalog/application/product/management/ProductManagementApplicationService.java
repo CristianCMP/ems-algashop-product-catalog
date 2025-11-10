@@ -1,0 +1,20 @@
+package com.algaworks.algashop.product_catalog.application.product.management;
+
+import com.algaworks.algashop.product_catalog.presentation.ProductInput;
+import org.springframework.stereotype.Service;
+
+import java.util.UUID;
+
+@Service
+public class ProductManagementApplicationService {
+
+    public UUID create(ProductInput input) {
+        return null;
+    }
+
+    public void update(UUID productId, ProductInput input) {
+    }
+
+    public void disable(UUID productId) {
+    }
+}
