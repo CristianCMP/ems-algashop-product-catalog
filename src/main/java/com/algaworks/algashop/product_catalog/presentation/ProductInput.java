@@ -6,22 +6,18 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
-import java.time.OffsetDateTime;
 import java.util.UUID;
 
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class ProductDetailOutput {
-    private UUID id;
-    private OffsetDateTime addedAt;
+public class ProductInput {
     private String name;
     private String brand;
     private BigDecimal regularPrice;
     private BigDecimal salePrice;
-    private Boolean inStock;
     private Boolean enabled;
-    private CategoryMinimalOutput category;
+    private UUID categoryId;
     private String description;
 }
