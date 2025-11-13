@@ -1,5 +1,7 @@
 package com.algaworks.algashop.product_catalog.application.product.query;
 
+import com.algaworks.algashop.product_catalog.application.PageModel;
+
 import java.util.UUID;
 
 public interface ProductQueryService {

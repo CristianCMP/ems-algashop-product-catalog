@@ -1,8 +1,8 @@
 package com.algaworks.algashop.product_catalog.presentation;
 
+import com.algaworks.algashop.product_catalog.application.PageModel;
 import com.algaworks.algashop.product_catalog.application.product.management.ProductInput;
 import com.algaworks.algashop.product_catalog.application.product.management.ProductManagementApplicationService;
-import com.algaworks.algashop.product_catalog.application.product.query.PageModel;
 import com.algaworks.algashop.product_catalog.application.product.query.ProductDetailOutput;
 import com.algaworks.algashop.product_catalog.application.product.query.ProductQueryService;
 import jakarta.validation.Valid;
