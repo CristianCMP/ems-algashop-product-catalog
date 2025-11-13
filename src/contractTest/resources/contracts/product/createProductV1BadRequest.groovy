@@ -26,12 +26,12 @@ Contract.make {
                 title: "Invalid fields",
                 detail: "One or more fields are invalid",
                 fields: [
-                        name: anyNonBlankString(),
-                        brand: anyNonBlankString(),
-                        regularPrice: anyNonBlankString(),
-                        salePrice: anyNonBlankString(),
-                        enabled: anyNonBlankString(),
-                        categoryId: anyNonBlankString()
+                    name: anyNonBlankString(),
+                    brand: anyNonBlankString(),
+                    regularPrice: anyNonBlankString(),
+                    salePrice: anyNonBlankString(),
+                    enabled: anyNonBlankString(),
+                    categoryId: anyNonBlankString()
                 ]
         ])
     }

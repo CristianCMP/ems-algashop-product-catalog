@@ -1,13 +1,13 @@
 package com.algaworks.algashop.product_catalog.contract.base;
 
 import com.algaworks.algashop.product_catalog.application.ResourceNotFoundException;
+import com.algaworks.algashop.product_catalog.application.product.management.ProductInput;
 import com.algaworks.algashop.product_catalog.application.product.management.ProductManagementApplicationService;
 import com.algaworks.algashop.product_catalog.application.product.query.PageModel;
 import com.algaworks.algashop.product_catalog.application.product.query.ProductDetailOutput;
 import com.algaworks.algashop.product_catalog.application.product.query.ProductDetailOutputTestDataBuilder;
 import com.algaworks.algashop.product_catalog.application.product.query.ProductQueryService;
 import com.algaworks.algashop.product_catalog.presentation.ProductController;
-import com.algaworks.algashop.product_catalog.presentation.ProductInput;
 import io.restassured.module.mockmvc.RestAssuredMockMvc;
 import org.junit.jupiter.api.BeforeEach;
 import org.mockito.Mockito;
@@ -66,9 +66,7 @@ public class ProductBase {
     }
 
     private void mockFilterProducts() {
-        Mockito.when(
-                productQueryService.filter(
-                        Mockito.anyInt(), Mockito.anyInt()))
+        Mockito.when(productQueryService.filter(Mockito.anyInt(), Mockito.anyInt()))
                 .then((answer)-> {
                     Integer size = answer.getArgument(0);
 

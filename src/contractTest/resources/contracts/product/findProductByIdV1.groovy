@@ -25,8 +25,8 @@ Contract.make {
                 inStock: true,
                 enabled: true,
                 category: [
-                        id:  anyUuid(),
-                        name: "Notebook"
+                    id: anyUuid(),
+                    name: "Notebook"
                 ],
                 description: "A Gamer Notebook"
         ])

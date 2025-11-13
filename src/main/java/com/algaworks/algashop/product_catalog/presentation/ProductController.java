@@ -1,5 +1,6 @@
 package com.algaworks.algashop.product_catalog.presentation;
 
+import com.algaworks.algashop.product_catalog.application.product.management.ProductInput;
 import com.algaworks.algashop.product_catalog.application.product.management.ProductManagementApplicationService;
 import com.algaworks.algashop.product_catalog.application.product.query.PageModel;
 import com.algaworks.algashop.product_catalog.application.product.query.ProductDetailOutput;
@@ -31,6 +32,19 @@ public class ProductController {
         return productQueryService.findById(productId);
     }
 
+    @PutMapping("/{productId}")
+    public ProductDetailOutput update(@PathVariable UUID productId,
+                                      @RequestBody @Valid ProductInput input) {
+        productManagementApplicationService.update(productId, input);
+        return productQueryService.findById(productId);
+    }
+
+    @DeleteMapping("/{productId}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void delete(@PathVariable UUID productId) {
+        productManagementApplicationService.disable(productId);
+    }
+
     @GetMapping
     public PageModel<ProductDetailOutput> filter(
             @RequestParam(name = "size", required = false) Integer size,
@@ -38,5 +52,4 @@ public class ProductController {
     ) {
         return productQueryService.filter(size, number);
     }
-
 }
