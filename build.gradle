@@ -62,7 +62,7 @@ dependencyManagement {
 }
 
 contracts {
-	packageWithBaseClasses = "com.algaworks.algashop.product_catalog.contract.base"
+	packageWithBaseClasses = "com.algaworks.algashop.product.catalog.contract.base"
 }
 
 tasks.named('contractTest') {
@@ -77,7 +77,7 @@ tasks.named('test') {
 asciidoctor {
 	dependsOn contractTest
 	inputs.dir snippetsDir
-	attributes 'snippets': snippetsDir
+	attributes 'snippets' : snippetsDir
 	sources {
 		include 'index.adoc'
 	}
