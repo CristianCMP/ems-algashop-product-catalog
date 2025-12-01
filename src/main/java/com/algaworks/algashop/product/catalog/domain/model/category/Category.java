@@ -32,6 +32,7 @@ public class Category {
     private OffsetDateTime updatedAt;
 
     public Category(String name, Boolean enabled) {
+        this.id = UUID.randomUUID();
         this.setName(name);
         this.setEnabled(enabled);
         this.createdAt = OffsetDateTime.now();
