@@ -26,7 +26,8 @@ public class CategoryQueryServiceImpl implements CategoryQueryService {
 
     @Override
     public CategoryDetailOutput findById(UUID categoryId) {
-        Category category = categoryRepository.findById(categoryId).orElseThrow(ResourceNotFoundException::new);
+        Category category = categoryRepository.findById(categoryId)
+                .orElseThrow(ResourceNotFoundException::new);
         return mapper.convert(category, CategoryDetailOutput.class);
     }
 }

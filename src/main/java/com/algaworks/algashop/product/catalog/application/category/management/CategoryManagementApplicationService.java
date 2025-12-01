@@ -11,7 +11,7 @@ import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
-public class CategoryManagementService {
+public class CategoryManagementApplicationService {
 
     private final CategoryRepository categoryRepository;
 
@@ -24,7 +24,6 @@ public class CategoryManagementService {
     public void update(UUID categoryId, CategoryInput input) {
         Category category = categoryRepository.findById(categoryId)
                 .orElseThrow(ResourceNotFoundException::new);
-
         category.setName(input.getName());
         category.setEnabled(input.getEnabled());
         categoryRepository.save(category);
@@ -33,7 +32,6 @@ public class CategoryManagementService {
     public void disable(UUID categoryId) {
         Category category = categoryRepository.findById(categoryId)
                 .orElseThrow(ResourceNotFoundException::new);
-
         category.setEnabled(false);
         categoryRepository.save(category);
     }

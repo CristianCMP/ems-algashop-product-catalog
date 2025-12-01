@@ -21,7 +21,6 @@ public class Category {
 
     @Id
     @EqualsAndHashCode.Include
-//    private ObjectId id;
     private UUID id;
 
     private String name;
@@ -47,12 +46,11 @@ public class Category {
         this.id = IdGenerator.generateTimeBasedUUID();
         this.setName(name);
         this.setEnabled(enabled);
-        this.createdAt = OffsetDateTime.now();
     }
 
     public void setName(String name) {
-        if (StringUtils.isBlank(name)){
-            throw new IllegalArgumentException("Name cannot be blank");
+        if (StringUtils.isBlank(name)) {
+            throw new IllegalArgumentException();
         }
         this.name = name;
     }

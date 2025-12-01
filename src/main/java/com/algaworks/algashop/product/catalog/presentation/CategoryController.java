@@ -2,7 +2,7 @@ package com.algaworks.algashop.product.catalog.presentation;
 
 import com.algaworks.algashop.product.catalog.application.PageModel;
 import com.algaworks.algashop.product.catalog.application.category.management.CategoryInput;
-import com.algaworks.algashop.product.catalog.application.category.management.CategoryManagementService;
+import com.algaworks.algashop.product.catalog.application.category.management.CategoryManagementApplicationService;
 import com.algaworks.algashop.product.catalog.application.category.query.CategoryDetailOutput;
 import com.algaworks.algashop.product.catalog.application.category.query.CategoryQueryService;
 import jakarta.validation.Valid;
@@ -18,7 +18,7 @@ import java.util.UUID;
 public class CategoryController {
 
     private final CategoryQueryService categoryQueryService;
-    private final CategoryManagementService categoryManagementService;
+    private final CategoryManagementApplicationService categoryManagementApplicationService;
 
     @GetMapping
     public PageModel<CategoryDetailOutput> filter(@RequestParam(defaultValue = "0") Integer page,
@@ -29,7 +29,7 @@ public class CategoryController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public CategoryDetailOutput create(@RequestBody @Valid CategoryInput input) {
-        UUID categoryId = categoryManagementService.create(input);
+        UUID categoryId = categoryManagementApplicationService.create(input);
         return categoryQueryService.findById(categoryId);
     }
 
@@ -42,13 +42,13 @@ public class CategoryController {
     public CategoryDetailOutput update(
             @PathVariable UUID categoryId,
             @RequestBody @Valid CategoryInput input) {
-        categoryManagementService.update(categoryId, input);
+        categoryManagementApplicationService.update(categoryId, input);
         return categoryQueryService.findById(categoryId);
     }
 
     @DeleteMapping("/{categoryId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void disable(@PathVariable UUID categoryId) {
-        categoryManagementService.disable(categoryId);
+        categoryManagementApplicationService.disable(categoryId);
     }
 }

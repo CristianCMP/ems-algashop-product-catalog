@@ -1,7 +1,10 @@
 package com.algaworks.algashop.product.catalog.domain.model.product;
 
 import com.algaworks.algashop.product.catalog.domain.model.IdGenerator;
-import lombok.*;
+import lombok.Builder;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.*;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -11,8 +14,8 @@ import java.util.UUID;
 
 @Getter
 @Document(collection = "products")
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
+@NoArgsConstructor
 public class Product {
 
     @Id
@@ -37,7 +40,7 @@ public class Product {
     private Long version;
 
     @CreatedDate
-    private OffsetDateTime createdAt;
+    private OffsetDateTime addedAt;
 
     @LastModifiedDate
     private OffsetDateTime updatedAt;
@@ -49,8 +52,9 @@ public class Product {
     private UUID lastModifiedByUserId;
 
     @Builder
-    public Product(String brand, String description, Boolean enabled, BigDecimal regularPrice, BigDecimal salePrice) {
+    public Product(String name, String brand, String description, Boolean enabled, BigDecimal regularPrice, BigDecimal salePrice) {
         this.id = IdGenerator.generateTimeBasedUUID();
+        this.name = name;
         this.brand = brand;
         this.description = description;
         this.enabled = enabled;
