@@ -6,7 +6,7 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.*;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.time.OffsetDateTime;
@@ -28,9 +28,20 @@ public class Category {
 
     private Boolean enabled;
 
+    @Version
+    private Long version;
+
+    @CreatedDate
     private OffsetDateTime createdAt;
 
+    @LastModifiedDate
     private OffsetDateTime updatedAt;
+
+    @CreatedBy
+    private UUID createdByUserId;
+
+    @LastModifiedBy
+    private UUID lastModifiedByUserId;
 
     public Category(String name, Boolean enabled) {
         this.id = IdGenerator.generateTimeBasedUUID();
