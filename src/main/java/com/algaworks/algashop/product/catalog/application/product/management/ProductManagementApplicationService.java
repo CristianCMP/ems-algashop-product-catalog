@@ -1,7 +1,7 @@
 package com.algaworks.algashop.product.catalog.application.product.management;
 
-import com.algaworks.algashop.product.catalog.application.ResourceNotFoundException;
 import com.algaworks.algashop.product.catalog.domain.model.category.Category;
+import com.algaworks.algashop.product.catalog.domain.model.category.CategoryNotFoundException;
 import com.algaworks.algashop.product.catalog.domain.model.category.CategoryRepository;
 import com.algaworks.algashop.product.catalog.domain.model.product.Product;
 import com.algaworks.algashop.product.catalog.domain.model.product.ProductRepository;
@@ -37,7 +37,7 @@ public class ProductManagementApplicationService {
     }
 
     private Category findCategory(@NotNull UUID categoryId) {
-        return categoryRepository.findById(categoryId).orElseThrow(ResourceNotFoundException::new);
+        return categoryRepository.findById(categoryId).orElseThrow(()-> new CategoryNotFoundException(categoryId));
     }
 
     public void update(UUID productId, ProductInput input) {

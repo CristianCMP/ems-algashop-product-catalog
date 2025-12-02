@@ -1,6 +1,8 @@
 package com.algaworks.algashop.product.catalog.presentation;
 
 import com.algaworks.algashop.product.catalog.application.ResourceNotFoundException;
+import com.algaworks.algashop.product.catalog.domain.model.DomainEntityNotFoundException;
+import com.algaworks.algashop.product.catalog.domain.model.DomainException;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.MessageSource;
@@ -17,9 +19,9 @@ import java.net.URI;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-@Slf4j
 @AllArgsConstructor
 @RestControllerAdvice
+@Slf4j
 public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 
     private final MessageSource messageSource;
@@ -46,23 +48,22 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
         return super.handleExceptionInternal(ex, problemDetail, headers, status, request);
     }
 
-    @ExceptionHandler(ResourceNotFoundException.class)
-    public ProblemDetail handleResourceNotFoundException(ResourceNotFoundException ex) {
-        log.error(ex.getMessage(), ex);
+    @ExceptionHandler({DomainEntityNotFoundException.class, ResourceNotFoundException.class})
+    public ProblemDetail handleResourceNotFoundException(Exception exception) {
         ProblemDetail problemDetail = ProblemDetail.forStatus(HttpStatus.NOT_FOUND);
         problemDetail.setTitle("Not found");
-        problemDetail.setDetail(ex.getMessage());
+        problemDetail.setDetail(exception.getMessage());
         problemDetail.setType(URI.create("/errors/not-found"));
         return problemDetail;
     }
 
-    @ExceptionHandler(Exception.class)
-    public ProblemDetail handleException(Exception ex) {
-        log.error(ex.getMessage(), ex);
-        ProblemDetail problemDetail = ProblemDetail.forStatus(HttpStatus.INTERNAL_SERVER_ERROR);
-        problemDetail.setTitle("Internal Server Error");
-        problemDetail.setDetail("An unexpected internal server error occurred.");
-        problemDetail.setType(URI.create("/errors/internal"));
+    @ExceptionHandler({DomainException.class, UnprocessableContentException.class})
+    public ProblemDetail handleUnprocessableContentException(Exception e) {
+        ProblemDetail problemDetail = ProblemDetail.forStatus(HttpStatus.UNPROCESSABLE_CONTENT);
+        problemDetail.setTitle("Unprocessable Content");
+        problemDetail.setDetail(e.getMessage());
+        problemDetail.setType(URI.create("/errors/unprocessable-content"));
         return problemDetail;
     }
+
 }
