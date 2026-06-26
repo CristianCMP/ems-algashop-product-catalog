@@ -2,7 +2,7 @@ package com.algaworks.algashop.product.catalog.contract.base;
 
 import com.algaworks.algashop.product.catalog.application.PageModel;
 import com.algaworks.algashop.product.catalog.application.category.management.CategoryInput;
-import com.algaworks.algashop.product.catalog.application.category.management.CategoryManagementService;
+import com.algaworks.algashop.product.catalog.application.category.management.CategoryManagementApplicationService;
 import com.algaworks.algashop.product.catalog.application.category.query.CategoryDetailOutput;
 import com.algaworks.algashop.product.catalog.application.category.query.CategoryOutputTestDataBuilder;
 import com.algaworks.algashop.product.catalog.application.category.query.CategoryQueryService;
@@ -30,7 +30,7 @@ public class CategoryBase {
     private CategoryQueryService categoryQueryService;
 
     @MockitoBean
-    private CategoryManagementService categoryManagementService;
+    private CategoryManagementApplicationService categoryManagementService;
 
     public static final UUID validCategoryId = UUID.fromString("f5ab7a1e-37da-41e1-892b-a1d38275c2f2");
 
