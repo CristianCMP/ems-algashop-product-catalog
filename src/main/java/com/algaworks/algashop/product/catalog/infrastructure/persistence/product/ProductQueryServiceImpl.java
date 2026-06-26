@@ -2,6 +2,7 @@ package com.algaworks.algashop.product.catalog.infrastructure.persistence.produc
 
 import com.algaworks.algashop.product.catalog.application.PageModel;
 import com.algaworks.algashop.product.catalog.application.product.query.ProductDetailOutput;
+import com.algaworks.algashop.product.catalog.application.product.query.ProductFilter;
 import com.algaworks.algashop.product.catalog.application.product.query.ProductQueryService;
 import com.algaworks.algashop.product.catalog.application.product.query.ProductSummaryOutput;
 import com.algaworks.algashop.product.catalog.application.utility.Mapper;
@@ -29,8 +30,8 @@ public class ProductQueryServiceImpl implements ProductQueryService {
     }
 
     @Override
-    public PageModel<ProductSummaryOutput> filter(Integer size, Integer number) {
-        Page<Product> products = productRepository.findAll(PageRequest.of(number, size));
+    public PageModel<ProductSummaryOutput> filter(ProductFilter filter) {
+        Page<Product> products = productRepository.findAll(PageRequest.of(filter.getPage(), filter.getSize()));
         Page<ProductSummaryOutput> productOutputs = products.map(p -> mapper.convert(p, ProductSummaryOutput.class));
         return PageModel.of(productOutputs);
     }
