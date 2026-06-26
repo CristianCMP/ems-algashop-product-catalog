@@ -12,3 +12,13 @@ logging:
     org.mongodb.driver.protocol.command: DEBUG
     org.mongodb.driver.protocol.query: DEBUG
     org.mongodb.driver.connection: DEBUG
+
+algashop:
+  data-load:
+    enabled: true
+    auto-drop: true
+    sources:
+      - location: db/testdata/categories.json
+        collection: categories
+      - location: db/testdata/products.json
+        collection: products
