@@ -124,6 +124,20 @@ public class ProductQueryServiceImpl implements ProductQueryService {
             }
         }
 
+        if (filter.getInStock() != null) {
+            if (filter.getInStock()) {
+                query.addCriteria(Criteria.where("quantityInStock").gt(0));
+            } else {
+                query.addCriteria(Criteria.where("quantityInStock").is(0));
+            }
+        }
+
+        if (filter.getCategoriesId() != null && filter.getCategoriesId().length > 0) {
+            query.addCriteria(Criteria.where("categoryId")
+                    .in((Object[]) filter.getCategoriesId())
+            );
+        }
+
         return query;
     }
 }
