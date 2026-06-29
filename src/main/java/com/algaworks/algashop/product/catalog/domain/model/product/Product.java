@@ -9,6 +9,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.annotation.*;
+import org.springframework.data.mongodb.core.index.CompoundIndex;
+import org.springframework.data.mongodb.core.index.CompoundIndexes;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.DocumentReference;
@@ -24,6 +26,10 @@ import java.util.UUID;
 @Getter
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @NoArgsConstructor
+@CompoundIndexes({
+        @CompoundIndex(name = "idx_product_by_category_enabled_salePrice", def = "{'categoryId' : 1, 'enabled': 1, 'salePrice': 1}"),
+        @CompoundIndex(name = "idx_product_by_category_enabled_addedAt", def = "{'categoryId' : 1, 'enabled': 1, 'addedAt': -1}")
+})
 public class Product {
 
     @Id
@@ -61,7 +67,7 @@ public class Product {
     private UUID lastModifiedByUserId;
 
 //    @DBRef
-    @Indexed(name = "idx_product_by_category")
+//    @Indexed(name = "idx_product_by_category")
     @DocumentReference
     @Field(name = "categoryId")
     private Category category;
