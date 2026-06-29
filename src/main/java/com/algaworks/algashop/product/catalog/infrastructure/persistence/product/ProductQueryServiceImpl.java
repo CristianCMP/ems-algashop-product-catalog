@@ -17,6 +17,7 @@ import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.data.mongodb.core.aggregation.*;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.CriteriaDefinition;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.TextCriteria;
 import org.springframework.stereotype.Service;
 
@@ -81,6 +82,21 @@ public class ProductQueryServiceImpl implements ProductQueryService {
         Optional<Criteria> criteria = buildCriteria(filter);
         Optional<TextCriteria> textCriteria = buildTextCriteria(filter);
 
+        Query query = new Query();
+        textCriteria.ifPresent(query::addCriteria);
+        criteria.ifPresent(query::addCriteria);
+
+        long totalElements = mongoOperations.count(query, Product.class);
+
+        if (totalElements == 0) {
+            return PageModel.<ProductSummaryOutput>builder()
+                    .number(0)
+                    .size(0)
+                    .totalPages(0)
+                    .totalElements(0)
+                    .build();
+        }
+
         List<AggregationOperation> operations = new ArrayList<>();
 
         textCriteria.ifPresent(c -> operations.add(match(c))); // text ever first
@@ -103,12 +119,14 @@ public class ProductQueryServiceImpl implements ProductQueryService {
                 .aggregate(aggregation, Product.class, ProductSummaryOutput.class)
                 .getMappedResults();
 
+        int totalPage = (int) Math.ceil((double) totalElements / (double) filter.getSize());
+
         return PageModel.<ProductSummaryOutput>builder()
                 .content(productSummaryOutputs)
                 .number(pageRequest.getPageNumber())
                 .size(pageRequest.getPageSize())
-                .totalElements(10)
-                .totalPages(10)
+                .totalElements(totalElements)
+                .totalPages(totalPage)
                 .build();
     }
 
