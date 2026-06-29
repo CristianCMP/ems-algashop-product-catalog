@@ -19,7 +19,7 @@ logging:
 algashop:
   data-load:
     enabled: true
-    auto-drop: false
+    auto-delete: true
     sources:
       - location: db/testdata/categories.json
         collection: categories
