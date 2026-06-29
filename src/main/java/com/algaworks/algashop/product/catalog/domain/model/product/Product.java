@@ -12,9 +12,11 @@ import org.springframework.data.annotation.*;
 import org.springframework.data.mongodb.core.index.CompoundIndex;
 import org.springframework.data.mongodb.core.index.CompoundIndexes;
 import org.springframework.data.mongodb.core.index.Indexed;
+import org.springframework.data.mongodb.core.index.TextIndexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.DocumentReference;
 import org.springframework.data.mongodb.core.mapping.Field;
+import org.springframework.data.mongodb.core.mapping.TextScore;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -36,11 +38,13 @@ public class Product {
     @EqualsAndHashCode.Include
     private UUID id;
 
+    @TextIndexed(weight = 1)
     private String name;
 
     @Indexed(name = "idx_product_by_brand")
     private String brand;
 
+    @TextIndexed(weight = 5)
     private String description;
 
     private Integer quantityInStock = 0;
@@ -73,6 +77,9 @@ public class Product {
     private Category category;
 
     private Integer discountPercentageRounded;
+
+    @TextScore
+    private Float score;
 
     @Builder
     public Product(String name, String brand, String description,

@@ -31,4 +31,6 @@ public class ProductSummaryOutput {
 
     private Integer quantityInStock;
     private Integer discountPercentageRounded;
+
+    private Float score;
 }
