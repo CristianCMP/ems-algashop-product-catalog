@@ -14,8 +14,6 @@ import org.springframework.data.mongodb.core.index.CompoundIndexes;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.index.TextIndexed;
 import org.springframework.data.mongodb.core.mapping.Document;
-import org.springframework.data.mongodb.core.mapping.DocumentReference;
-import org.springframework.data.mongodb.core.mapping.Field;
 import org.springframework.data.mongodb.core.mapping.TextScore;
 
 import java.math.BigDecimal;
@@ -72,9 +70,12 @@ public class Product {
 
 //    @DBRef
 //    @Indexed(name = "idx_product_by_category")
-    @DocumentReference
-    @Field(name = "categoryId")
-    private Category category;
+//    @DocumentReference
+//    @Field(name = "categoryId")
+//    private Category category;
+    private UUID categoryId;
+
+    private ProductCategory category;
 
     private Integer discountPercentageRounded;
 
@@ -149,7 +150,9 @@ public class Product {
 
     public void setCategory(Category category) {
         Objects.requireNonNull(category);
-        this.category = category;
+        this.categoryId = category.getId();
+        this.category = ProductCategory.of(category);
+//        this.category = category;
     }
 
     public void disable() {
