@@ -110,9 +110,17 @@ public class ProductQueryServiceImpl implements ProductQueryService {
 
         PageRequest pageRequest = PageRequest.of(filter.getPage(), filter.getSize());
 
+//        Version 1
+//        operations.addAll(Arrays.asList(
+//                lookup("categories", "categoryId", "_id", "category"),
+//                unwind("$category"),
+//                sort(sortWith(filter)),
+//                projectForSummary(),
+//                skip(pageRequest.getOffset()),
+//                limit(filter.getSize())
+//        ));
+
         operations.addAll(Arrays.asList(
-                lookup("categories", "categoryId", "_id", "category"),
-                unwind("$category"),
                 sort(sortWith(filter)),
                 projectForSummary(),
                 skip(pageRequest.getOffset()),
@@ -137,22 +145,30 @@ public class ProductQueryServiceImpl implements ProductQueryService {
     }
 
     private ProjectionOperation projectForSummary() {
-        return project()
-                .and("_id").as("_id")
-                .and("addedAt").as("addedAt")
-                .and("name").as("name")
-                .and("brand").as("brand")
-                .and("regularPrice").as("regularPrice")
-                .and("salePrice").as("salePrice")
-                .and("enabled").as("enabled")
-                .and("quantityInStock").as("quantityInStock")
-                .and("discountPercentageRounded").as("discountPercentageRounded")
-                .and("score").as("score")
-                .and("category._id").as("category._id")
-                .and("category.name").as("category.name")
+//        #Old version
+//        return project()
+//                .and("_id").as("_id")
+//                .and("addedAt").as("addedAt")
+//                .and("name").as("name")
+//                .and("brand").as("brand")
+//                .and("regularPrice").as("regularPrice")
+//                .and("salePrice").as("salePrice")
+//                .and("enabled").as("enabled")
+//                .and("quantityInStock").as("quantityInStock")
+//                .and("discountPercentageRounded").as("discountPercentageRounded")
+//                .and("score").as("score")
+//                .and("category._id").as("category._id")
+//                .and("category.name").as("category.name")
+//                .and("category.enabled").as("category.enabled")
+//                .andExpression("salePrice < regularPrice").as("hasDiscount")
+//                .andExpression("quantityInStock > 0").as("inStock")
+//                .and(StringOperators.Substr.valueOf("description").substring(0, 50)).as("shortDescription");
+
+        return project(ProductSummaryOutput.class)
                 .andExpression("salePrice < regularPrice").as("hasDiscount")
                 .andExpression("quantityInStock > 0").as("inStock")
-                .and(StringOperators.Substr.valueOf("description").substring(0, 50)).as("shortDescription");
+                .and(StringOperators.Substr.valueOf("description")
+                        .substring(0, 50)).as("shortDescription");
     }
 
     private Optional<Criteria> buildCriteria(ProductFilter filter) {
@@ -209,7 +225,9 @@ public class ProductQueryServiceImpl implements ProductQueryService {
         }
 
         if (filter.getCategoriesId() != null && filter.getCategoriesId().length > 0) {
-            criterias.add(Criteria.where("categoryId")
+//            #Old version
+//            criterias.add(Criteria.where("categoryId")
+            criterias.add(Criteria.where("category.id")
                     .in((Object[]) filter.getCategoriesId())
             );
         }
