@@ -27,8 +27,13 @@ import java.util.UUID;
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @NoArgsConstructor
 @CompoundIndexes({
-        @CompoundIndex(name = "idx_product_by_category_enabled_salePrice", def = "{'categoryId' : 1, 'enabled': 1, 'salePrice': 1}"),
-        @CompoundIndex(name = "idx_product_by_category_enabled_addedAt", def = "{'categoryId' : 1, 'enabled': 1, 'addedAt': -1}")
+        /*
+            There are two ways to do this.
+            One is to use the 'pidx' prefix, in which case you don't need to use 'category._id', only 'category.id'.
+            Otherwise, if you use the 'idx' prefix, you need to use 'category._id'.
+        */
+        @CompoundIndex(name = "pidx_product_by_category_enabled_salePrice", def = "{'category.id' : 1, 'enabled': 1, 'salePrice': 1}"),
+        @CompoundIndex(name = "idx_product_by_category_enabled_addedAt", def = "{'category._id' : 1, 'enabled': 1, 'addedAt': -1}")
 })
 public class Product {
 
@@ -73,7 +78,7 @@ public class Product {
 //    @DocumentReference
 //    @Field(name = "categoryId")
 //    private Category category;
-    private UUID categoryId;
+//    private UUID categoryId;
 
     private ProductCategory category;
 
@@ -150,8 +155,10 @@ public class Product {
 
     public void setCategory(Category category) {
         Objects.requireNonNull(category);
-        this.categoryId = category.getId();
         this.category = ProductCategory.of(category);
+//        #Version 2
+//        this.categoryId = category.getId();
+//        #Version 1
 //        this.category = category;
     }
 
