@@ -99,6 +99,8 @@ public class Product extends AbstractAggregateRoot<Product> {
         this.setRegularPrice(regularPrice);
         this.setSalePrice(salePrice);
         this.setCategory(category);
+
+        this.registerProductAddedEvent();
     }
 
     public void setName(String name) {
@@ -121,7 +123,16 @@ public class Product extends AbstractAggregateRoot<Product> {
 
     public void setEnabled(Boolean enabled) {
         Objects.requireNonNull(enabled);
+        Boolean wasEnabled = this.enabled;
         this.enabled = enabled;
+
+        if (Boolean.TRUE.equals(wasEnabled) && Boolean.FALSE.equals(enabled)) {
+            this.registerProductDelistedEvent();
+        }
+
+        if (Boolean.FALSE.equals(wasEnabled) && Boolean.TRUE.equals(enabled)) {
+            this.registerProductListedEvent();
+        }
     }
 
     public void setCategory(Category category) {
@@ -183,6 +194,18 @@ public class Product extends AbstractAggregateRoot<Product> {
 
     private boolean isNewlyOnSale(boolean wasOnSale) {
         return getHasDiscount() && !wasOnSale;
+    }
+
+    private void registerProductDelistedEvent() {
+        super.registerEvent(ProductDelistedEvent.builder().productId(this.getId()).build());
+    }
+
+    private void registerProductListedEvent() {
+        super.registerEvent(ProductListedEvent.builder().productId(this.getId()).build());
+    }
+
+    private void registerProductAddedEvent() {
+        super.registerEvent(ProductAddedEvent.builder().productId(this.id).build());
     }
 
     private void registerPriceChangedEvent(BigDecimal oldRegularPrice, BigDecimal oldSalePrice) {
