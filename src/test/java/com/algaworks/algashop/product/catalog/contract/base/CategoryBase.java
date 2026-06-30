@@ -6,6 +6,7 @@ import com.algaworks.algashop.product.catalog.application.category.management.Ca
 import com.algaworks.algashop.product.catalog.application.category.query.CategoryDetailOutput;
 import com.algaworks.algashop.product.catalog.application.category.query.CategoryOutputTestDataBuilder;
 import com.algaworks.algashop.product.catalog.application.category.query.CategoryQueryService;
+import com.algaworks.algashop.product.catalog.application.product.query.ProductFilter;
 import com.algaworks.algashop.product.catalog.presentation.CategoryController;
 import io.restassured.module.mockmvc.RestAssuredMockMvc;
 import org.junit.jupiter.api.BeforeEach;
@@ -45,10 +46,10 @@ public class CategoryBase {
 
         Mockito.when(categoryQueryService.filter(Mockito.any()))
                 .then((answer)-> {
-                    Integer size = answer.getArgument(0);
+                    ProductFilter filter = answer.getArgument(0);
                     return PageModel.<CategoryDetailOutput>builder()
                             .number(0)
-                            .size(size)
+                            .size(filter.getSize())
                             .totalPages(1)
                             .totalElements(2)
                             .content(
