@@ -1,6 +1,7 @@
 package com.algaworks.algashop.product.catalog.domain.model.product;
 
 import com.algaworks.algashop.product.catalog.domain.model.DomainEventPublisher;
+import com.algaworks.algashop.product.catalog.domain.model.DomainException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -19,7 +20,12 @@ public class StockService {
             throw new IllegalArgumentException();
         }
 
-        var result = quantityInStockAdjustment.increase(product.getId(), quantity);
+        QuantityInStockAdjustment.Result result;
+        try {
+            result = quantityInStockAdjustment.increase(product.getId(), quantity);
+        } catch (Exception e) {
+            throw new DomainException(String.format("Failed to restock product %s", product.getId()));
+        }
 
         if (result.isRestocked()) {
             domainEventPublisher.publisher(
@@ -34,7 +40,12 @@ public class StockService {
             throw new IllegalArgumentException();
         }
 
-        var result = quantityInStockAdjustment.decrease(product.getId(), quantity);
+        QuantityInStockAdjustment.Result result;
+        try {
+            result = quantityInStockAdjustment.decrease(product.getId(), quantity);
+        } catch (Exception e) {
+            throw new DomainException(String.format("Failed to withdraw product %s from stock", product.getId()));
+        }
 
         if (result.isOutOfStock()) {
             domainEventPublisher.publisher(
