@@ -7,6 +7,7 @@ import com.algaworks.algashop.product.catalog.domain.model.product.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.UUID;
 
@@ -61,12 +62,14 @@ public class ProductManagementApplicationService {
         productRepository.save(product);
     }
 
+    @Transactional
     public void restock(UUID productId, int quantity) {
         Product product = findProduct(productId);
         StockMovement movement = stockService.restock(product, quantity);
         stockMovementRepository.save(movement);
     }
 
+    @Transactional
     public void withdraw(UUID productId, int quantity) {
         Product product = findProduct(productId);
         StockMovement movement = stockService.withdraw(product, quantity);
