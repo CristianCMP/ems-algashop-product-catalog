@@ -1,4 +1,5 @@
-spring:
-  mongodb:
-    uri: mongodb://root:algashop@localhost:27017/product_catalog_test?authSource=admin
+# You don't need that, because TestContainerMongoDBConfig
+#spring:
+#  mongodb:
+#    uri: mongodb://root:algashop@localhost:27017/product_catalog_test?authSource=admin
 #    representation.uuid: standard
