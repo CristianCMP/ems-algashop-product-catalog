@@ -74,8 +74,7 @@ public class ProductBase {
     }
 
     private void mockCreateProduct() {
-        ProductDetailOutput productDetailOutput = ProductDetailOutputTestDataBuilder.aProduct()
-                .id(createdProductId).inStock(false).build();
+        ProductDetailOutput productDetailOutput = ProductDetailOutputTestDataBuilder.aProduct().id(createdProductId).inStock(false).build();
         Mockito.when(productManagementApplicationService.create(Mockito.any(ProductInput.class)))
                 .thenReturn(productDetailOutput);
 
@@ -107,4 +106,8 @@ public class ProductBase {
                 .thenReturn(ProductDetailOutputTestDataBuilder.aProduct().id(validProductId).build());
     }
 
+    private void mockValidProductUpdate() {
+        Mockito.when(productManagementApplicationService.update(Mockito.any(UUID.class), Mockito.any(ProductInput.class)))
+                .thenReturn(ProductDetailOutputTestDataBuilder.aProduct().id(validProductId).build());
+    }
 }
