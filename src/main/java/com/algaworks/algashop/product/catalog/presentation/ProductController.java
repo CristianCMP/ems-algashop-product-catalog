@@ -40,7 +40,7 @@ public class ProductController {
     @GetMapping("/{productId}")
     public ResponseEntity<ProductDetailOutput> findById(@PathVariable UUID productId) {
 
-        if (Math.random() < 0.5) {
+        if (Math.random() < 0.8) {
             try {
                 Thread.sleep(Duration.ofSeconds(20));
             }catch (Exception e) {}
