@@ -44,7 +44,7 @@ public class ProductController {
             return ResponseEntity.badRequest().build();
         }
 
-        if (Math.random() < 0.6) {
+        if (Math.random() < 0.86) {
             try {
                 Thread.sleep(Duration.ofSeconds(20));
             }catch (Exception e) {}
