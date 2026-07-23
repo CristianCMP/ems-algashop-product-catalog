@@ -20,3 +20,18 @@ algashop:
         collection: categories
       - location: db/testdata/products.json
         collection: products
+
+management:
+  info:
+    env:
+      enabled: true
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+  endpoint:
+    health:
+      show-details: always
+
+info:
+  app.name: AlgaShop Product Catalog API
