@@ -1,4 +1,4 @@
-package com.algaworks.algashop.product.catalog.infrastructure.redis;
+package com.algaworks.algashop.product.catalog.infrastructure.cache;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
