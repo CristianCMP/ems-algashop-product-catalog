@@ -23,8 +23,7 @@ algashop:
 
 management:
   info:
-    env:
-      enabled: true
+    env.enabled: true
   health:
     redis:
       enabled: false
@@ -40,6 +39,5 @@ management:
           include: mongo,readinessState
       status:
         order: "DOWN, OUT_OF_SERVICE, UNKNOWN, DEGRADED, UP"
-
 info:
   app.name: AlgaShop Product Catalog API

@@ -11,7 +11,7 @@ spring:
       port: 6379
       password: algashop
       database: 0
-      connect-timeout: 20
+      timeout: 20
 
 logging:
   level:
