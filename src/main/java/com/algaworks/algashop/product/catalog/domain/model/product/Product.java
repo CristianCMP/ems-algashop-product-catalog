@@ -20,8 +20,7 @@ import org.springframework.data.mongodb.core.mapping.TextScore;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.OffsetDateTime;
-import java.util.Objects;
-import java.util.UUID;
+import java.util.*;
 
 @Document(collection = "products")
 @Getter
@@ -87,6 +86,10 @@ public class Product extends AbstractAggregateRoot<Product> {
 
     @TextScore
     private Float score;
+
+    private Image mainImage;
+
+    private Set<Image> images = new HashSet<>();
 
     @Builder
     public Product(String name, String brand, String description,
@@ -158,6 +161,48 @@ public class Product extends AbstractAggregateRoot<Product> {
 
     public boolean getHasDiscount() {
         return getDiscountPercentageRounded() != null && getDiscountPercentageRounded() > 0;
+    }
+
+    public Set<Image> getImages() {
+        return Collections.unmodifiableSet(this.images);
+    }
+
+    public Optional<Image> getImage(UUID imageId) {
+        Objects.requireNonNull(imageId);
+        return this.images.stream().filter(image -> image.getId().equals(imageId)).findFirst();
+    }
+
+    public UUID addImage(String nameImage) {
+        Objects.requireNonNull(images);
+        Image image = new Image(nameImage);
+        this.images.add(image);
+
+        if (this.mainImage == null) {
+            this.setMainImage(image);
+        }
+
+        return image.getId();
+    }
+
+    public void changeMainImage(UUID imageId) {
+        Objects.requireNonNull(imageId);
+        Image image = fingImageById(imageId);
+        setMainImage(image);
+    }
+
+    public void removeImage(UUID imageId) {
+        Objects.requireNonNull(imageId);
+        Image image = fingImageById(imageId);
+        this.images.remove(image);
+        if (image.equals(this.mainImage)) {
+            this.setMainImage(this.images.stream().findFirst().orElse(null));
+        }
+    }
+
+    private Image fingImageById(UUID imageId) {
+        return getImage(imageId)
+                .orElseThrow(() -> new DomainException(
+                        String.format("Image of id %s was not found on product %s", imageId, id)));
     }
 
     public void changePrice(BigDecimal regularPrice, BigDecimal salePrice) {
@@ -241,6 +286,10 @@ public class Product extends AbstractAggregateRoot<Product> {
             throw new IllegalArgumentException();
         }
         this.quantityInStock =quantityInStock;
+    }
+
+    private void setMainImage(Image mainImage) {
+        this.mainImage = mainImage;
     }
 
     private void calculateDiscountPercentage() {
