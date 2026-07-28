@@ -39,17 +39,6 @@ public class ProductController {
 
     @GetMapping("/{productId}")
     public ResponseEntity<ProductDetailOutput> findById(@PathVariable UUID productId) {
-
-//        if (productId.equals(UUID.fromString("5805e415-1ca0-45e2-9764-6fd5d1eb2339"))){
-//            return ResponseEntity.badRequest().build();
-//        }
-//
-//        if (Math.random() < 0.86) {
-//            try {
-//                Thread.sleep(Duration.ofSeconds(20));
-//            }catch (Exception e) {}
-//        }
-
         ProductDetailOutput product = productQueryService.findById(productId);
         return ResponseEntity.ok()
                 .cacheControl(CacheControl.maxAge(Duration.ofMinutes(1)).cachePublic())
