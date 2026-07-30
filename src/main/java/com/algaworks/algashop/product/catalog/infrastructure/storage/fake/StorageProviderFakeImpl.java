@@ -26,6 +26,6 @@ public class StorageProviderFakeImpl implements StorageProvider {
 
     @Override
     public boolean fileExists(String remoteFileName) {
-        return false;
+        return !remoteFileName.equals("fail.jpg");
     }
 }
