@@ -23,6 +23,7 @@ import org.springframework.data.mongodb.core.query.TextCriteria;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 import static org.springframework.data.mongodb.core.aggregation.Aggregation.*;
 
@@ -122,16 +123,24 @@ public class ProductQueryServiceImpl implements ProductQueryService {
 
         operations.addAll(Arrays.asList(
                 sort(sortWith(filter)),
-                projectForSummary(),
+//                projectForSummary(), // You don't need it anymore because the mapper already includes it
                 skip(pageRequest.getOffset()),
                 limit(filter.getSize())
         ));
 
         Aggregation aggregation = newAggregation(operations);
 
-        List<ProductSummaryOutput> productSummaryOutputs = mongoOperations
-                .aggregate(aggregation, Product.class, ProductSummaryOutput.class)
+//        List<ProductSummaryOutput> productSummaryOutputs = mongoOperations
+//                .aggregate(aggregation, Product.class, ProductSummaryOutput.class)
+//                .getMappedResults();
+//
+        List<Product> products = mongoOperations
+                .aggregate(aggregation, Product.class, Product.class)
                 .getMappedResults();
+
+        List<ProductSummaryOutput> productSummaryOutputs = products.stream()
+                .map(p->mapper.convert(p, ProductSummaryOutput.class))
+                .collect(Collectors.toList());
 
         int totalPage = (int) Math.ceil((double) totalElements / (double) filter.getSize());
 
