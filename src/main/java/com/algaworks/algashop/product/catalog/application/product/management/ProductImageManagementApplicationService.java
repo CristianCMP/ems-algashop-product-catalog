@@ -9,6 +9,7 @@ import com.algaworks.algashop.product.catalog.domain.model.product.Product;
 import com.algaworks.algashop.product.catalog.domain.model.product.ProductNotFoundException;
 import com.algaworks.algashop.product.catalog.domain.model.product.ProductRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.stereotype.Service;
 
 import java.util.Objects;
@@ -22,6 +23,7 @@ public class ProductImageManagementApplicationService {
     private final StorageProvider storageProvider;
     private final Mapper mapper;
 
+    @CacheEvict(cacheNames = "algashop:products:v1", key = "#productId")
     public ImageOutput create(UUID productId, ImageInput input) {
         Objects.requireNonNull(productId);
         Objects.requireNonNull(input);
@@ -43,6 +45,7 @@ public class ProductImageManagementApplicationService {
         return mapper.convert(image, ImageOutput.class);
     }
 
+    @CacheEvict(cacheNames = "algashop:products:v1", key = "#productId")
     public void delete(UUID productId, UUID imageId) {
         Objects.requireNonNull(productId);
         Objects.requireNonNull(imageId);
@@ -56,6 +59,7 @@ public class ProductImageManagementApplicationService {
         productRepository.save(product);
     }
 
+    @CacheEvict(cacheNames = "algashop:products:v1", key = "#productId")
     public void primary(UUID productId, UUID imageId) {
         Objects.requireNonNull(productId);
         Objects.requireNonNull(imageId);
