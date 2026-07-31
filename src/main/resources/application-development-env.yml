@@ -24,6 +24,12 @@ spring:
       s3:
         enabled: true
         path-style-access-enabled: true  # Don't need in production, is only for develop
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://127.0.0.1:8081
+#          jwk-set-uri: http://127.0.0.1:8081/oauth2/jwks
 
 logging:
   level:
