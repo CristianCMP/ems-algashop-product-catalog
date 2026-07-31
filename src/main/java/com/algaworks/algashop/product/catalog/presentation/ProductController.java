@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.*;
 import java.time.Duration;
 import java.util.UUID;
 
-import static com.algaworks.algashop.product.catalog.infrastructure.security.SecurityAnnotation.*;
+import static com.algaworks.algashop.product.catalog.infrastructure.security.SecurityAnnotations.*;
 
 @RestController
 @RequestMapping("/api/v1/products")
@@ -30,7 +30,7 @@ public class ProductController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    @CanReadProducts
+    @CanWriteProducts
     public ProductDetailOutput create(@RequestBody @Valid ProductInput input) {
         try {
             return productManagementApplicationService.create(input);
@@ -45,7 +45,7 @@ public class ProductController {
         ProductDetailOutput product = productQueryService.findById(productId);
         return ResponseEntity.ok()
                 .cacheControl(CacheControl.maxAge(Duration.ofMinutes(1)).cachePublic())
-                .eTag("product:id:" + product.getId() + ":v:" + product.getVersion()) // overrides lastModified
+                .eTag("product:id:" + product.getId() + ":v:" + product.getVersion())
                 .lastModified(product.getUpdatedAt().toInstant())
                 .body(product);
     }

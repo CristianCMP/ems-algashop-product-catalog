@@ -12,7 +12,7 @@ import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
-public class ProductImagesQueryService {
+public class ProductImageQueryService {
 
     private final ProductRepository productRepository;
     private final Mapper mapper;
