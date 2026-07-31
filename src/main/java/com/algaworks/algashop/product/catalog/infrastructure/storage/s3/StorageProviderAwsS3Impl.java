@@ -58,7 +58,15 @@ public class StorageProviderAwsS3Impl implements StorageProvider {
 
     @Override
     public void deleteFile(String remoteFileName) {
+        if (!fileExists(remoteFileName)) {
+            throw new StorageProviderException(String.format("Remote file %s was not found", remoteFileName));
+        }
 
+        try {
+            s3Template.deleteObject(properties.getBucketName(), remoteFileName);
+        } catch (S3Exception e) {
+            throw new StorageProviderException(String.format("Unknown error when tried to remove the file %s", remoteFileName), e);
+        }
     }
 
     @Override
