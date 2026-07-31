@@ -1,4 +1,4 @@
-package com.algaworks.algashop.product.catalog.infrastructure.securoty;
+package com.algaworks.algashop.product.catalog.infrastructure.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

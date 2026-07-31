@@ -21,7 +21,6 @@ import java.util.UUID;
 @RestController
 @RequestMapping("/api/v1/categories")
 @RequiredArgsConstructor
-@CrossOrigin("*")
 public class CategoryController {
 
     private final CategoryQueryService categoryQueryService;
