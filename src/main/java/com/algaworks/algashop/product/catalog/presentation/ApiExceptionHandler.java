@@ -70,22 +70,22 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
         return problemDetail;
     }
 
-    @ExceptionHandler(AuthorizationDeniedException.class)
-    public ProblemDetail handleAuthorizationDeniedException(AuthorizationDeniedException ex) {
-        ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.FORBIDDEN, ex.getMessage());
-        problemDetail.setType(URI.create("/errors/forbidden"));
-        problemDetail.setTitle("Forbidden");
-
-        return problemDetail;
-    }
-
     @ExceptionHandler(Exception.class)
-    public ProblemDetail handleAllExceptions(Exception ex) {
-        ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage());
-        problemDetail.setType(URI.create("/errors/internal-server-error"));
-        problemDetail.setTitle("Internal server error");
-
+    public ProblemDetail handleException(Exception e) {
+        log.error(e.getMessage(), e);
+        ProblemDetail problemDetail = ProblemDetail.forStatus(HttpStatus.INTERNAL_SERVER_ERROR);
+        problemDetail.setTitle("Internal Server Error");
+        problemDetail.setDetail("An unexpected internal error occurred.");
+        problemDetail.setType(URI.create("/errors/internal"));
         return problemDetail;
     }
 
+    @ExceptionHandler(AuthorizationDeniedException.class)
+    public ProblemDetail handleAuthorizationDeniedException(AuthorizationDeniedException e) {
+        ProblemDetail problemDetail = ProblemDetail.forStatus(HttpStatus.FORBIDDEN);
+        problemDetail.setTitle("Forbidden");
+        problemDetail.setDetail(e.getMessage());
+        problemDetail.setType(URI.create("/errors/forbidden"));
+        return problemDetail;
+    }
 }
