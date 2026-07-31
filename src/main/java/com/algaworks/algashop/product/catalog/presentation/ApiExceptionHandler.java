@@ -3,6 +3,7 @@ package com.algaworks.algashop.product.catalog.presentation;
 import com.algaworks.algashop.product.catalog.application.ResourceNotFoundException;
 import com.algaworks.algashop.product.catalog.domain.model.DomainEntityNotFoundException;
 import com.algaworks.algashop.product.catalog.domain.model.DomainException;
+import com.algaworks.algashop.product.catalog.infrastructure.storage.s3.StorageProviderException;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.MessageSource;
@@ -57,7 +58,7 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
         return problemDetail;
     }
 
-    @ExceptionHandler({DomainException.class, UnprocessableContentException.class})
+    @ExceptionHandler({DomainException.class, UnprocessableContentException.class, StorageProviderException.class})
     public ProblemDetail handleUnprocessableContentException(Exception e) {
         ProblemDetail problemDetail = ProblemDetail.forStatus(HttpStatus.UNPROCESSABLE_CONTENT);
         problemDetail.setTitle("Unprocessable Content");

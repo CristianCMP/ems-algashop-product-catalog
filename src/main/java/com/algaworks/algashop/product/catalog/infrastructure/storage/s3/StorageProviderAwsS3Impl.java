@@ -2,14 +2,14 @@ package com.algaworks.algashop.product.catalog.infrastructure.storage.s3;
 
 import com.algaworks.algashop.product.catalog.application.storage.FileReference;
 import com.algaworks.algashop.product.catalog.application.storage.StorageProvider;
+import io.awspring.cloud.s3.ObjectMetadata;
+import io.awspring.cloud.s3.S3Exception;
 import io.awspring.cloud.s3.S3Template;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.springframework.stereotype.Component;
 
-import java.net.URI;
 import java.net.URL;
-import java.util.UUID;
 
 @Component
 @RequiredArgsConstructor
@@ -30,8 +30,30 @@ public class StorageProviderAwsS3Impl implements StorageProvider {
     @Override
     @SneakyThrows
     public URL requestUploadUrl(FileReference fileReference) {
-        return URI.create(String.format("http://localhost:45566/%s?token=%s",
-                fileReference.getFileName(), UUID.randomUUID())).toURL();
+        String bucketName = properties.getBucketName();
+        String fileName = fileReference.getFileName();
+
+        if (fileExists(fileName)) {
+            throw new StorageProviderException(String.format("Remote file %s already exists", fileName));
+        }
+
+        ObjectMetadata.Builder metadataBuilder = ObjectMetadata.builder();
+
+        if (fileReference.isAllowPublicRead()) {
+            metadataBuilder.acl("public-read");
+        }
+
+        try {
+           return s3Template.createSignedPutURL(
+                    bucketName,
+                    fileName,
+                    fileReference.getExpiresIn(),
+                    metadataBuilder.build(),
+                    fileReference.getContentType().toString()
+            );
+        } catch (S3Exception e) {
+            throw new StorageProviderException(String.format("Unknown error when tried to create presigned URL for file %s", fileName), e);
+        }
     }
 
     @Override
@@ -41,6 +63,6 @@ public class StorageProviderAwsS3Impl implements StorageProvider {
 
     @Override
     public boolean fileExists(String remoteFileName) {
-        return !remoteFileName.equals("fail.jpg");
+        return s3Template.objectExists(properties.getBucketName(), remoteFileName);
     }
 }
