@@ -42,7 +42,7 @@ public class ResilienceCacheErrorHandler implements CacheErrorHandler {
     }
 
     private void logWarn(RuntimeException exception, Cache cache, Object key, String method) {
-        log.warn("Cache {} error | cache='{}' | key='{}' | cause='{}'",
+        log.warn("Cache {} error | cache='{}' | key = '{}' | cause='{}'",
                 method,
                 cache.getName(),
                 key,
@@ -51,7 +51,7 @@ public class ResilienceCacheErrorHandler implements CacheErrorHandler {
     }
 
     private void logError(RuntimeException exception, Cache cache, Object key, String method) {
-        log.warn("Cache {} error | cache='{}' | key='{}' | cause='{}'",
+        log.error("Cache {} error | cache='{}' | key = '{}' | cause='{}'",
                 method,
                 cache.getName(),
                 key,

@@ -22,7 +22,7 @@ public class CustomRedisCacheHealthIndicator implements HealthIndicator {
             return Health.up().build();
         } catch (Exception e) {
             return Health.status("DEGRADED")
-                    .withDetail("error",e.getMessage())
+                    .withDetail("error", e.getMessage())
                     .withException(e)
                     .build();
         }

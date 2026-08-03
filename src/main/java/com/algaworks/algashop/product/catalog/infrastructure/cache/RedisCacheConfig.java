@@ -15,7 +15,7 @@ import java.time.Duration;
 @Configuration
 @EnableCaching
 @ConditionalOnProperty(name = "spring.cache.type", havingValue = "redis")
-public class RedisCacheConfig  implements CachingConfigurer {
+public class RedisCacheConfig implements CachingConfigurer {
 
     @Autowired
     private ResilienceCacheErrorHandler resilienceCacheErrorHandler;
@@ -25,7 +25,7 @@ public class RedisCacheConfig  implements CachingConfigurer {
         var defaultCacheConfig = RedisCacheConfiguration.defaultCacheConfig()
                 .computePrefixWith(c -> c + ":")
                 .entryTtl(Duration.ofMinutes(1));
-        return builder -> builder.cacheDefaults(defaultCacheConfig)
+        return (builder) -> builder.cacheDefaults(defaultCacheConfig)
                 .withCacheConfiguration("algashop:products:v1",
                         defaultCacheConfig.disableCachingNullValues().entryTtl(Duration.ofMinutes(5)));
     }
@@ -35,4 +35,5 @@ public class RedisCacheConfig  implements CachingConfigurer {
     public CacheErrorHandler errorHandler() {
         return resilienceCacheErrorHandler;
     }
+
 }
