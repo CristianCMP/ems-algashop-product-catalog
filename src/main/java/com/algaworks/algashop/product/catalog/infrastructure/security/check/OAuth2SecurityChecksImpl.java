@@ -1,6 +1,6 @@
 package com.algaworks.algashop.product.catalog.infrastructure.security.check;
 
-import com.algaworks.algashop.product.catalog.application.security.SecurityCheckApplicationService;
+import com.algaworks.algashop.product.catalog.application.security.SecurityChecks;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.Authentication;
@@ -10,9 +10,9 @@ import org.springframework.stereotype.Service;
 
 import java.util.UUID;
 
-@Service(value = "securityCheck")
+@Service(value = "securityChecks")
 @Slf4j
-public class OAuth2SecurityCheckApplicationServiceImpl implements SecurityCheckApplicationService {
+public class OAuth2SecurityChecksImpl implements SecurityChecks {
 
     @Override
     public UUID getAuthenticatedUserId() {
@@ -49,11 +49,6 @@ public class OAuth2SecurityCheckApplicationServiceImpl implements SecurityCheckA
             return false;
         }
         return jwt.getAudience().contains(jwt.getSubject());
-    }
-
-    @Override
-    public boolean canAccessOwnProfile() {
-        return this.isAuthenticated() && !isMachineAuthenticated();
     }
 
     private Jwt getJwt() {
