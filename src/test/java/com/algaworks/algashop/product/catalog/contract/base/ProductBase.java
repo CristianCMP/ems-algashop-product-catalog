@@ -4,14 +4,12 @@ import com.algaworks.algashop.product.catalog.application.PageModel;
 import com.algaworks.algashop.product.catalog.application.ResourceNotFoundException;
 import com.algaworks.algashop.product.catalog.application.product.management.ProductInput;
 import com.algaworks.algashop.product.catalog.application.product.management.ProductManagementApplicationService;
-import com.algaworks.algashop.product.catalog.application.product.query.ProductDetailOutput;
-import com.algaworks.algashop.product.catalog.application.product.query.ProductDetailOutputTestDataBuilder;
-import com.algaworks.algashop.product.catalog.application.product.query.ProductFilter;
-import com.algaworks.algashop.product.catalog.application.product.query.ProductQueryService;
+import com.algaworks.algashop.product.catalog.application.product.query.*;
 import com.algaworks.algashop.product.catalog.presentation.ProductController;
 import io.restassured.module.mockmvc.RestAssuredMockMvc;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
@@ -30,7 +28,7 @@ import java.util.UUID;
 
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.documentationConfiguration;
 
-@WebMvcTest(ProductController.class)
+@WebMvcTest(controllers = ProductController.class)
 @ExtendWith(RestDocumentationExtension.class)
 public class ProductBase {
 
@@ -56,9 +54,10 @@ public class ProductBase {
                         .snippets().withTemplateFormat(TemplateFormats.asciidoctor())
                         .and().operationPreprocessors()
                         .withResponseDefaults(Preprocessors.prettyPrint()))
-                        .alwaysDo(MockMvcRestDocumentation.document("{ClassName}/{methodName}"))
+                .alwaysDo(MockMvcRestDocumentation.document("{ClassName}/{methodName}"))
                 .defaultResponseCharacterEncoding(StandardCharsets.UTF_8)
-                .build());
+                .build()
+        );
 
         RestAssuredMockMvc.enableLoggingOfRequestAndResponseIfValidationFails();
 
@@ -66,6 +65,7 @@ public class ProductBase {
         mockFilterProducts();
         mockCreateProduct();
         mockInvalidProductFindById();
+        mockValidProductUpdate();
     }
 
     private void mockInvalidProductFindById() {
@@ -110,4 +110,5 @@ public class ProductBase {
         Mockito.when(productManagementApplicationService.update(Mockito.any(UUID.class), Mockito.any(ProductInput.class)))
                 .thenReturn(ProductDetailOutputTestDataBuilder.aProduct().id(validProductId).build());
     }
+
 }
