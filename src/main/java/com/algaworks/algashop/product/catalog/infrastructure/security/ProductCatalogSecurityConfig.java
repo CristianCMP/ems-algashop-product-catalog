@@ -28,7 +28,7 @@ public class ProductCatalogSecurityConfig {
 //                        .requestMatchers(HttpMethod.POST, "/api/v1/products/**").hasAuthority("SCOPE_products:write")
 //                        .requestMatchers(HttpMethod.GET, "/api/v1/categories/**").hasAuthority("SCOPE_categories:read")
 //                        .requestMatchers(HttpMethod.POST, "/api/v1/categories/**").hasAuthority("SCOPE_categories:write")
-                        .requestMatchers("/actuator/health/**").permitAll()
+                        .requestMatchers("/actuator/health/**","/actuator/info/**").permitAll()
                         .anyRequest().authenticated()
                 )
                 .oauth2ResourceServer(oauth2 ->
