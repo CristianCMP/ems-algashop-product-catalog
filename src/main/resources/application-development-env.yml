@@ -1,18 +1,18 @@
 spring:
   config:
     import:
+      - aws-secretsmanager:/secret/algashop/product-catalog/aws-s3?prefix=catalog.secrets.
       - aws-secretsmanager:/secret/algashop/product-catalog/redis-password?prefix=catalog.secrets.
       - aws-parameterstore:/config/algashop/product-catalog?prefix=catalog.params
       - aws-parameterstore:/config/algashop/shared?prefix=shared.params
   cloud:
     aws:
-      credentials:
-        access-key: test
-        secret-key: test
       region:
         static: us-east-1
-      #      endpoint: http://localhost:4566
       endpoint: http://algashop-localstack:4566 # Don't need in production, is only for develop
+      credentials:
+        access-key: ${catalog.secrets.access-key}
+        secret-key: ${catalog.secrets.secret-key}
       s3:
         enabled: true
         path-style-access-enabled: true  # Don't need in production, is only for develop
@@ -24,11 +24,12 @@ spring:
 #    uri: mongodb://root:algashop@localhost:27017/product_catalog?authSource=admin
 #    representation.uuid: standard
   data:
-    host: ${catalog.params.redis.host}
-    port: ${catalog.params.redis.port}
-    password: ${catalog.secrets.redis-password}
-    database: ${catalog.params.redis.database}
-    timeout: ${catalog.params.redis.timeout}
+    redis:
+      host: ${catalog.params.redis.host}
+      port: ${catalog.params.redis.port}
+      password: ${catalog.secrets.redis-password}
+      database: ${catalog.params.redis.database}
+      timeout: ${catalog.params.redis.timeout}
   security:
     oauth2:
       resourceserver:
@@ -55,3 +56,8 @@ algashop:
   storage:
     s3:
       bucket-name: ${catalog.params.storage.bucket-name}
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://service-registry:8761/eureka

@@ -61,6 +61,7 @@ dependencies {
 	implementation 'io.awspring.cloud:spring-cloud-aws-starter-s3'
 	implementation 'io.awspring.cloud:spring-cloud-aws-starter-secrets-manager'
 	implementation 'io.awspring.cloud:spring-cloud-aws-starter-parameter-store'
+	implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client'
 
 	compileOnly 'org.projectlombok:lombok'
 	annotationProcessor 'org.projectlombok:lombok'
