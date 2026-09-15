@@ -38,12 +38,12 @@ spring:
 #          issuer-uri: http://auth.algashop.local:8081
 #          jwk-set-uri: http://127.0.0.1:8081/oauth2/jwks
 
-logging:
-  level:
-    org.mongodb.driver.protocol.command: DEBUG
-#    org.mongodb.driver.protocol.query: DEBUG
-#    org.mongodb.driver.connection: DEBUG
-    org.mongodb.driver.cluster: OFF
+#logging:
+#  level:
+#    org.mongodb.driver.protocol.command: DEBUG
+##    org.mongodb.driver.protocol.query: DEBUG
+##    org.mongodb.driver.connection: DEBUG
+#    org.mongodb.driver.cluster: OFF
 
 algashop:
   data-load:
