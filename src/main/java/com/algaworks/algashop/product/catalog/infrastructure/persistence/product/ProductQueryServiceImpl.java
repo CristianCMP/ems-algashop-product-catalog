@@ -36,7 +36,7 @@ public class ProductQueryServiceImpl implements ProductQueryService {
 
     private final MongoOperations mongoOperations;
 
-//    private static final String findWordRegex = "(?i)(?<= |^)%s(?= |$)"; //%s it's from java, used from complete words
+    //    private static final String findWordRegex = "(?i)(?<= |^)%s(?= |$)"; //%s it's from java, used from complete words
     private static final String findWordRegex = "(?i)%s"; //%s it's from java, used from incomplete words
 
     @Override
@@ -81,16 +81,16 @@ public class ProductQueryServiceImpl implements ProductQueryService {
 
     @Override
     public PageModel<ProductSummaryOutput> filter(ProductFilter filter) {
-        Optional<Criteria> criteria = buildCriteria(filter);
+        Optional<List<CriteriaDefinition>> criteria = buildCriteria(filter);
         Optional<TextCriteria> textCriteria = buildTextCriteria(filter);
 
         Query query = new Query();
         textCriteria.ifPresent(query::addCriteria);
-        criteria.ifPresent(query::addCriteria);
+        criteria.ifPresent(definitions -> definitions.forEach(query::addCriteria));
 
         long totalElements = mongoOperations.count(query, Product.class);
 
-        if (totalElements == 0) {
+        if (totalElements == 0L) {
             return PageModel.<ProductSummaryOutput>builder()
                     .number(0)
                     .size(0)
@@ -107,7 +107,8 @@ public class ProductQueryServiceImpl implements ProductQueryService {
                     new Document("$addFields", new Document("score", new Document("$meta", "textScore")));
             operations.add(addTextScoreField);
         }); // text ever first
-        criteria.ifPresent(c -> operations.add(match(c)));
+        criteria.ifPresent(definitions ->
+                definitions.forEach(definition -> operations.add(match(definition))));
 
         PageRequest pageRequest = PageRequest.of(filter.getPage(), filter.getSize());
 
@@ -139,7 +140,7 @@ public class ProductQueryServiceImpl implements ProductQueryService {
                 .getMappedResults();
 
         List<ProductSummaryOutput> productSummaryOutputs = products.stream()
-                .map(p->mapper.convert(p, ProductSummaryOutput.class))
+                .map(p -> mapper.convert(p, ProductSummaryOutput.class))
                 .collect(Collectors.toList());
 
         int totalPage = (int) Math.ceil((double) totalElements / (double) filter.getSize());
@@ -180,7 +181,7 @@ public class ProductQueryServiceImpl implements ProductQueryService {
                         .substring(0, 50)).as("shortDescription");
     }
 
-    private Optional<Criteria> buildCriteria(ProductFilter filter) {
+    private Optional<List<CriteriaDefinition>> buildCriteria(ProductFilter filter) {
         List<CriteriaDefinition> criterias = new ArrayList<>();
 
         if (filter.getEnabled() != null) {
@@ -245,9 +246,7 @@ public class ProductQueryServiceImpl implements ProductQueryService {
             return Optional.empty();
         }
 
-        return Optional.of(
-                new Criteria().andOperator(criterias.toArray(new Criteria[0]))
-        );
+        return Optional.of(criterias);
     }
 
     public Optional<TextCriteria> buildTextCriteria(ProductFilter filter) {
@@ -268,7 +267,7 @@ public class ProductQueryServiceImpl implements ProductQueryService {
     }
 
     private Sort sortWith(ProductFilter filter) {
-        if (StringUtils.isNotBlank(filter.getTerm())){
+        if (StringUtils.isNotBlank(filter.getTerm())) {
             return Sort.by("score");
         }
 
