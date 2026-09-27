@@ -37,6 +37,13 @@ spring:
           issuer-uri: ${shared.params.auth-server-url}
 #          issuer-uri: http://auth.algashop.local:8081
 #          jwk-set-uri: http://127.0.0.1:8081/oauth2/jwks
+  kafka:
+    bootstrap-servers: algashop-kafka-1:9092,algashop-kafka-2:9093,algashop-kafka-3:9094
+    # Initial connection point
+    admin:
+      fail-fast: true # Fail fast if unable to connect to the cluster
+      auto-create: true # Allows for the automatic creation of topics if they do not exist.
+      modify-topic-configs: false # Prevents modification of existing topic settings.
 
 logging:
   level:
