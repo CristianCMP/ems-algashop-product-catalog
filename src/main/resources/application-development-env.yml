@@ -44,6 +44,9 @@ spring:
       fail-fast: true # Fail fast if unable to connect to the cluster
       auto-create: true # Allows for the automatic creation of topics if they do not exist.
       modify-topic-configs: false # Prevents modification of existing topic settings.
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JacksonJsonSerializer
 
 logging:
   level:
