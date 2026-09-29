@@ -47,6 +47,10 @@ spring:
     producer:
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
       value-serializer: org.springframework.kafka.support.serializer.JacksonJsonSerializer
+      properties:
+        spring.json.type.mapping:
+          ProductCatalog.ProductDelistedIntegrationEvent:com.algaworks.algashop.product.catalog.application.product.event.ProductDelistedIntegrationEvent,
+          ProductCatalog.ProductListedIntegrationEvent:com.algaworks.algashop.product.catalog.application.product.event.ProductListedIntegrationEvent
 
 logging:
   level:
