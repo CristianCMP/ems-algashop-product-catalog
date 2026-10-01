@@ -50,7 +50,8 @@ spring:
       properties:
         spring.json.type.mapping:
           ProductCatalog.ProductDelistedIntegrationEvent:com.algaworks.algashop.product.catalog.application.product.event.ProductDelistedIntegrationEvent,
-          ProductCatalog.ProductListedIntegrationEvent:com.algaworks.algashop.product.catalog.application.product.event.ProductListedIntegrationEvent
+          ProductCatalog.ProductListedIntegrationEvent:com.algaworks.algashop.product.catalog.application.product.event.ProductListedIntegrationEvent,
+          ProductCatalog.ProductAddedIntegrationEvent:com.algaworks.algashop.product.catalog.application.product.event.ProductAddedIntegrationEvent
 
 logging:
   level:
