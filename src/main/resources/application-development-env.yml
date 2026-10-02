@@ -74,6 +74,9 @@ algashop:
   storage:
     s3:
       bucket-name: ${catalog.params.storage.bucket-name}
+  messaging:
+    kafka:
+      product-event-topic-name: product-catalog.product.events
 
 eureka:
   client:

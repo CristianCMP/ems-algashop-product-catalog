@@ -3,6 +3,7 @@ package com.algaworks.algashop.product.catalog.infrastructure.listener.product;
 import com.algaworks.algashop.product.catalog.application.IntegrationEventPublisher;
 import com.algaworks.algashop.product.catalog.application.product.event.ProductAddedIntegrationEvent;
 import com.algaworks.algashop.product.catalog.application.product.event.ProductDelistedIntegrationEvent;
+import com.algaworks.algashop.product.catalog.application.product.event.ProductIntegrationEventPublisher;
 import com.algaworks.algashop.product.catalog.application.product.event.ProductListedIntegrationEvent;
 import com.algaworks.algashop.product.catalog.application.utility.Mapper;
 import com.algaworks.algashop.product.catalog.domain.model.product.*;
@@ -17,7 +18,7 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class ProductEventListener {
 
-    private final IntegrationEventPublisher integrationEventPublisher;
+    private final ProductIntegrationEventPublisher integrationEventPublisher;
     private final Mapper mapper;
 
     @EventListener(ProductPriceChangedEvent.class)
@@ -37,21 +38,21 @@ public class ProductEventListener {
     public void handle(ProductAddedEvent event) {
         log.info("ProductAddedEvent " + event);
         var integrationEvent = mapper.convert(event, ProductAddedIntegrationEvent.class);
-        integrationEventPublisher.send(integrationEvent, integrationEvent.getProductId().toString(),"product-catalog.product.events");
+        integrationEventPublisher.send(integrationEvent);
     }
 
     @EventListener(ProductDelistedEvent.class)
     public void handle(ProductDelistedEvent event) {
         log.info("ProductDelistedEvent  " + event);
         var integrationEvent = mapper.convert(event, ProductDelistedIntegrationEvent.class);
-        integrationEventPublisher.send(integrationEvent, integrationEvent.getProductId().toString(),"product-catalog.product.events");
+        integrationEventPublisher.send(integrationEvent);
     }
 
     @EventListener(ProductListedEvent.class)
     public void handle(ProductListedEvent event) {
         log.info("ProductListedEvent " + event);
         var integrationEvent = mapper.convert(event, ProductListedIntegrationEvent.class);
-        integrationEventPublisher.send(integrationEvent, integrationEvent.getProductId().toString(),"product-catalog.product.events");
+        integrationEventPublisher.send(integrationEvent);
     }
 
     @EventListener(ProductRestockedEvent.class)
