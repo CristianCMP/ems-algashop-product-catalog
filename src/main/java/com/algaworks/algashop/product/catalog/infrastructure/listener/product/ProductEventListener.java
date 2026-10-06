@@ -1,10 +1,7 @@
 package com.algaworks.algashop.product.catalog.infrastructure.listener.product;
 
 import com.algaworks.algashop.product.catalog.application.IntegrationEventPublisher;
-import com.algaworks.algashop.product.catalog.application.product.event.ProductAddedIntegrationEvent;
-import com.algaworks.algashop.product.catalog.application.product.event.ProductDelistedIntegrationEvent;
-import com.algaworks.algashop.product.catalog.application.product.event.ProductIntegrationEventPublisher;
-import com.algaworks.algashop.product.catalog.application.product.event.ProductListedIntegrationEvent;
+import com.algaworks.algashop.product.catalog.application.product.event.*;
 import com.algaworks.algashop.product.catalog.application.utility.Mapper;
 import com.algaworks.algashop.product.catalog.domain.model.product.*;
 import lombok.RequiredArgsConstructor;
@@ -25,7 +22,8 @@ public class ProductEventListener {
     @Async
     public void handle(ProductPriceChangedEvent event) {
         log.info("ProductPriceChangedEvent " + event);
-//        integrationEventPublisher.send(event, event.getProductId().toString(), "product-catalog.product.events");
+        var integrationEvent = mapper.convert(event, ProductPriceChangedIntegrationEvent.class);
+        integrationEventPublisher.send(integrationEvent);
     }
 
     @EventListener(ProductPlacedOnSaleEvent.class)
