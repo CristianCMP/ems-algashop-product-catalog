@@ -24,6 +24,9 @@ public class ProductEventListener {
         log.info("ProductPriceChangedEvent " + event);
         var integrationEvent = mapper.convert(event, ProductPriceChangedIntegrationEvent.class);
         integrationEventPublisher.send(integrationEvent);
+
+        var v2IntegrationEvent = mapper.convert(event, ProductPriceChangedV2IntegrationEvent.class);
+        integrationEventPublisher.send(v2IntegrationEvent);
     }
 
     @EventListener(ProductPlacedOnSaleEvent.class)
