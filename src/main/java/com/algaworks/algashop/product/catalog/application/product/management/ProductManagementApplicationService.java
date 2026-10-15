@@ -27,6 +27,7 @@ public class ProductManagementApplicationService {
 
     private final Mapper mapper;
 
+    @Transactional
     @CachePut(cacheNames = "algashop:products:v1", key = "#result.id",
             condition = "#input.enabled == true")
     public ProductDetailOutput create(ProductInput input) {
@@ -35,6 +36,7 @@ public class ProductManagementApplicationService {
         return mapper.convert(product, ProductDetailOutput.class);
     }
 
+    @Transactional
     @CachePut(cacheNames = "algashop:products:v1", key = "#result.id", condition = "#input.enabled == true")
     @CacheEvict(cacheNames = "algashop:products:v1", key = "#productId", condition = "#input.enabled == false")
     public ProductDetailOutput update(UUID productId, ProductInput input) {
@@ -49,6 +51,7 @@ public class ProductManagementApplicationService {
         return mapper.convert(product, ProductDetailOutput.class);
     }
 
+    @Transactional
     @CacheEvict(cacheNames = "algashop:products:v1", key = "#productId")
     public void disable(UUID productId) {
         Product product = findProduct(productId);
@@ -56,6 +59,8 @@ public class ProductManagementApplicationService {
         productRepository.save(product);
     }
 
+    @Transactional
+    @CacheEvict(cacheNames = "algashop:products:v1", key = "#productId")
     public void enable(UUID productId) {
         Product product = findProduct(productId);
         product.enable();
@@ -101,10 +106,10 @@ public class ProductManagementApplicationService {
     }
 
     private Product findProduct(UUID productId) {
-        return productRepository.findById(productId).orElseThrow(()-> new ProductNotFoundException(productId));
+        return productRepository.findById(productId).orElseThrow(() -> new ProductNotFoundException(productId));
     }
 
     private Category findCategory(@NotNull UUID categoryId) {
-        return categoryRepository.findById(categoryId).orElseThrow(()-> new CategoryNotFoundException(categoryId));
+        return categoryRepository.findById(categoryId).orElseThrow(() -> new CategoryNotFoundException(categoryId));
     }
 }

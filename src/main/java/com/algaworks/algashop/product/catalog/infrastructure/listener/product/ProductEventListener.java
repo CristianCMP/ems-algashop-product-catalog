@@ -1,13 +1,11 @@
 package com.algaworks.algashop.product.catalog.infrastructure.listener.product;
 
-import com.algaworks.algashop.product.catalog.application.IntegrationEventPublisher;
 import com.algaworks.algashop.product.catalog.application.product.event.*;
 import com.algaworks.algashop.product.catalog.application.utility.Mapper;
 import com.algaworks.algashop.product.catalog.domain.model.product.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.event.EventListener;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -19,7 +17,6 @@ public class ProductEventListener {
     private final Mapper mapper;
 
     @EventListener(ProductPriceChangedEvent.class)
-    @Async
     public void handle(ProductPriceChangedEvent event) {
         log.info("ProductPriceChangedEvent " + event);
         var integrationEvent = mapper.convert(event, ProductPriceChangedIntegrationEvent.class);
