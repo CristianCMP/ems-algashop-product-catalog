@@ -45,6 +45,7 @@ spring:
       auto-create: true # Allows for the automatic creation of topics if they do not exist.
       modify-topic-configs: false # Prevents modification of existing topic settings.
     producer:
+      acks: 1 # min insync = 2
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
       value-serializer: org.springframework.kafka.support.serializer.JacksonJsonSerializer
 #      retries: 2147483647 # Integer.MAX_VALUE, It's already the standard.
@@ -52,7 +53,7 @@ spring:
 #        retry.backoff.ms: 100         # initial wait between attempts
 #        retry.backoff.max.ms: 1000    # backoff ceiling, which increases with each new attempt
         request.timeout.ms: 5000      # the time taken for a request to reach the broker while awaiting a response
-        delivery.timeout.ms: 10000    # ceiling for the entire operation: submission + retries + backoff + confirmation
+        delivery.timeout.ms: 30000    # ceiling for the entire operation: submission + retries + backoff + confirmation
         max.block.ms: 5000            # the time that send() itself can block before future exists.
         spring.json.type.mapping:
           ProductCatalog.ProductDelistedIntegrationEvent:com.algaworks.algashop.product.catalog.application.product.event.ProductDelistedIntegrationEvent,
