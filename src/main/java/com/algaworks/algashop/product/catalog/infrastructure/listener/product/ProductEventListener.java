@@ -23,7 +23,7 @@ public class ProductEventListener {
         integrationEventPublisher.send(integrationEvent);
 
         var v2IntegrationEvent = mapper.convert(event, ProductPriceChangedV2IntegrationEvent.class);
-        v2IntegrationEvent.setNewSalePrice(null);
+//        v2IntegrationEvent.setNewSalePrice(null);
         integrationEventPublisher.send(v2IntegrationEvent);
     }
 
