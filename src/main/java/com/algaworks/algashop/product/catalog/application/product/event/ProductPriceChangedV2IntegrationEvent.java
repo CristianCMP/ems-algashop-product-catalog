@@ -1,6 +1,7 @@
 package com.algaworks.algashop.product.catalog.application.product.event;
 
 import com.algaworks.algashop.product.catalog.application.IntegrationEvent;
+import com.algaworks.algashop.product.catalog.domain.model.IdGenerator;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -16,10 +17,12 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ProductPriceChangedV2IntegrationEvent implements IntegrationEvent {
+    private UUID idempotencyKey = IdGenerator.generateTimeBasedUUID();
+
     @NotNull
     private UUID productId;
     @NotNull
-    private OffsetDateTime changeAt;
+    private OffsetDateTime changedAt;
     @NotNull
     private BigDecimal oldRegularPrice;
     @NotNull

@@ -20,10 +20,10 @@ public class ProductEventListener {
     public void handle(ProductPriceChangedEvent event) {
         log.info("ProductPriceChangedEvent " + event);
         var integrationEvent = mapper.convert(event, ProductPriceChangedIntegrationEvent.class);
-        integrationEventPublisher.send(integrationEvent);
-
         var v2IntegrationEvent = mapper.convert(event, ProductPriceChangedV2IntegrationEvent.class);
+
 //        v2IntegrationEvent.setNewSalePrice(null);
+        integrationEventPublisher.send(integrationEvent);
         integrationEventPublisher.send(v2IntegrationEvent);
     }
 
