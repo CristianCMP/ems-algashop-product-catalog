@@ -39,6 +39,13 @@ spring:
 #          jwk-set-uri: http://127.0.0.1:8081/oauth2/jwks
   kafka:
     bootstrap-servers: algashop-kafka-1:9092,algashop-kafka-2:9093,algashop-kafka-3:9094
+    properties:
+      spring.json.type.mapping:
+        ProductCatalog.ProductDelistedIntegrationEvent:com.algaworks.algashop.product.catalog.application.product.event.ProductDelistedIntegrationEvent,
+        ProductCatalog.ProductListedIntegrationEvent:com.algaworks.algashop.product.catalog.application.product.event.ProductListedIntegrationEvent,
+        ProductCatalog.ProductAddedIntegrationEvent:com.algaworks.algashop.product.catalog.application.product.event.ProductAddedIntegrationEvent,
+        ProductCatalog.ProductPriceChangedIntegrationEvent:com.algaworks.algashop.product.catalog.application.product.event.ProductPriceChangedIntegrationEvent,
+        ProductCatalog.ProductPriceChangedV2IntegrationEvent:com.algaworks.algashop.product.catalog.application.product.event.ProductPriceChangedV2IntegrationEvent
     # Initial connection point
     admin:
       fail-fast: true # Fail fast if unable to connect to the cluster
@@ -56,12 +63,12 @@ spring:
         request.timeout.ms: 5000      # the time taken for a request to reach the broker while awaiting a response
         delivery.timeout.ms: 30000    # ceiling for the entire operation: submission + retries + backoff + confirmation
         max.block.ms: 5000            # the time that send() itself can block before future exists.
-        spring.json.type.mapping:
-          ProductCatalog.ProductDelistedIntegrationEvent:com.algaworks.algashop.product.catalog.application.product.event.ProductDelistedIntegrationEvent,
-          ProductCatalog.ProductListedIntegrationEvent:com.algaworks.algashop.product.catalog.application.product.event.ProductListedIntegrationEvent,
-          ProductCatalog.ProductAddedIntegrationEvent:com.algaworks.algashop.product.catalog.application.product.event.ProductAddedIntegrationEvent,
-          ProductCatalog.ProductPriceChangedIntegrationEvent:com.algaworks.algashop.product.catalog.application.product.event.ProductPriceChangedIntegrationEvent,
-          ProductCatalog.ProductPriceChangedV2IntegrationEvent:com.algaworks.algashop.product.catalog.application.product.event.ProductPriceChangedV2IntegrationEvent
+#        spring.json.type.mapping:
+#          ProductCatalog.ProductDelistedIntegrationEvent:com.algaworks.algashop.product.catalog.application.product.event.ProductDelistedIntegrationEvent,
+#          ProductCatalog.ProductListedIntegrationEvent:com.algaworks.algashop.product.catalog.application.product.event.ProductListedIntegrationEvent,
+#          ProductCatalog.ProductAddedIntegrationEvent:com.algaworks.algashop.product.catalog.application.product.event.ProductAddedIntegrationEvent,
+#          ProductCatalog.ProductPriceChangedIntegrationEvent:com.algaworks.algashop.product.catalog.application.product.event.ProductPriceChangedIntegrationEvent,
+#          ProductCatalog.ProductPriceChangedV2IntegrationEvent:com.algaworks.algashop.product.catalog.application.product.event.ProductPriceChangedV2IntegrationEvent
 
 logging:
   level:
