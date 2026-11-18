@@ -19,5 +19,5 @@ public class ProductPriceChangedEvent {
     private BigDecimal newSalePrice;
     
     @Builder.Default
-    private OffsetDateTime changeAt = OffsetDateTime.now();
+    private OffsetDateTime changedAt = OffsetDateTime.now();
 }
